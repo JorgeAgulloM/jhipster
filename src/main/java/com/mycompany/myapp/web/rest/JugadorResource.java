@@ -45,8 +45,8 @@ public class JugadorResource {
     }
 
     //get métrica 3
-    @GetMapping("/jugadores/ganadores-juego/{}")
-    public ResponseEntity<List<Jugador>> getGanadasJuego(@PathVariable String juego) {
+    @GetMapping("/jugadores/ganadores-juego")
+    public ResponseEntity<List<Jugador>> getGanadasJuego(String juego) {
         if (juego.isBlank() || juego.isEmpty()) {
             throw new BadRequestAlertException("Es necesario conocer el juego", ENTITY_NAME, "notnull");
         }
