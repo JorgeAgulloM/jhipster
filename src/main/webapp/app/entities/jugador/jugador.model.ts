@@ -1,4 +1,5 @@
 import dayjs from 'dayjs/esm';
+import { IPartida } from 'app/entities/partida/partida.model';
 
 export interface IJugador {
   id?: number;
@@ -6,6 +7,8 @@ export interface IJugador {
   nombre?: string;
   apellido?: string;
   nacimiento?: dayjs.Dayjs;
+  ganadas?: IPartida[] | null;
+  perdidas?: IPartida[] | null;
 }
 
 export class Jugador implements IJugador {
@@ -14,7 +17,9 @@ export class Jugador implements IJugador {
     public apodo?: string,
     public nombre?: string,
     public apellido?: string,
-    public nacimiento?: dayjs.Dayjs
+    public nacimiento?: dayjs.Dayjs,
+    public ganadas?: IPartida[] | null,
+    public perdidas?: IPartida[] | null
   ) {}
 }
 

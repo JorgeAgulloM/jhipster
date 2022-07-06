@@ -1,5 +1,6 @@
 package com.mycompany.myapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -30,9 +31,11 @@ public class Partida implements Serializable {
     private String juego;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = { "ganadas", "perdidas" }, allowSetters = true)
     private Jugador ganador;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = { "ganadas", "perdidas" }, allowSetters = true)
     private Jugador perdedor;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

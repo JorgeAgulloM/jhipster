@@ -26,6 +26,19 @@
   "name": "Jugador",
   "pagination": "no",
   "readOnly": false,
-  "relationships": [],
+  "relationships": [
+    {
+      "otherEntityName": "partida",
+      "otherEntityRelationshipName": "ganador",
+      "relationshipName": "ganada",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "partida",
+      "otherEntityRelationshipName": "perdedor",
+      "relationshipName": "perdida",
+      "relationshipType": "one-to-many"
+    }
+  ],
   "service": "no"
 }
