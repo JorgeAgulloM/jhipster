@@ -1,7 +1,10 @@
 package com.mycompany.myapp.web.rest;
 
+import com.mycompany.myapp.domain.Jugador;
 import com.mycompany.myapp.domain.Partida;
+import com.mycompany.myapp.repository.JugadorRepository;
 import com.mycompany.myapp.repository.PartidaRepository;
+import com.mycompany.myapp.service.PartidaService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -36,8 +39,35 @@ public class PartidaResource {
 
     private final PartidaRepository partidaRepository;
 
-    public PartidaResource(PartidaRepository partidaRepository) {
+    private final PartidaService partidaService;
+
+    public PartidaResource(PartidaRepository partidaRepository, PartidaService partidaService) {
         this.partidaRepository = partidaRepository;
+        this.partidaService = partidaService;
+    }
+
+    //get métrica 1
+    @GetMapping("/partida/lista-ganadas")
+    public ResponseEntity<List<Partida>> getListaGanadasApodo(String apodo) {
+        if (apodo.isBlank() || apodo.isEmpty()) {
+            throw new BadRequestAlertException("Es necesario conocer el apodo", ENTITY_NAME, "notnull");
+        }
+
+        List<Partida> result = partidaService.findByGanador_Apodo(apodo);
+
+        return ResponseEntity.ok().body(result);
+    }
+
+    //get métrica 2
+    @GetMapping("/partida/total-ganadas")
+    public ResponseEntity<Long> getTotalGanadasApodo(String apodo) {
+        if (apodo.isBlank() || apodo.isEmpty()) {
+            throw new BadRequestAlertException("Es necesario conocer el apodo", ENTITY_NAME, "notnull");
+        }
+
+        Long result = partidaService.countByGanador_Apodo(apodo);
+
+        return ResponseEntity.ok().body(result);
     }
 
     /**

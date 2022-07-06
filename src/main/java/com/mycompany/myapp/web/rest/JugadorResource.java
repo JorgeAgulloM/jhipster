@@ -2,6 +2,7 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.Jugador;
 import com.mycompany.myapp.repository.JugadorRepository;
+import com.mycompany.myapp.service.JugadorService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -36,8 +37,23 @@ public class JugadorResource {
 
     private final JugadorRepository jugadorRepository;
 
-    public JugadorResource(JugadorRepository jugadorRepository) {
+    private final JugadorService jugadorService;
+
+    public JugadorResource(JugadorRepository jugadorRepository, JugadorService jugadorService) {
         this.jugadorRepository = jugadorRepository;
+        this.jugadorService = jugadorService;
+    }
+
+    //get métrica 3
+    @GetMapping("/jugadores/ganadores-juego/{}")
+    public ResponseEntity<List<Jugador>> getGanadasJuego(@PathVariable String juego) {
+        if (juego.isBlank() || juego.isEmpty()) {
+            throw new BadRequestAlertException("Es necesario conocer el juego", ENTITY_NAME, "notnull");
+        }
+
+        List<Jugador> result = jugadorService.findByGanadas_Juego(juego);
+
+        return ResponseEntity.ok().body(result);
     }
 
     /**
