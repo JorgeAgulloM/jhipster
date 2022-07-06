@@ -29,6 +29,12 @@ public class Partida implements Serializable {
     @Column(name = "juego", nullable = false)
     private String juego;
 
+    @ManyToOne
+    private Jugador ganador;
+
+    @ManyToOne
+    private Jugador perdedor;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -68,6 +74,32 @@ public class Partida implements Serializable {
 
     public void setJuego(String juego) {
         this.juego = juego;
+    }
+
+    public Jugador getGanador() {
+        return this.ganador;
+    }
+
+    public void setGanador(Jugador jugador) {
+        this.ganador = jugador;
+    }
+
+    public Partida ganador(Jugador jugador) {
+        this.setGanador(jugador);
+        return this;
+    }
+
+    public Jugador getPerdedor() {
+        return this.perdedor;
+    }
+
+    public void setPerdedor(Jugador jugador) {
+        this.perdedor = jugador;
+    }
+
+    public Partida perdedor(Jugador jugador) {
+        this.setPerdedor(jugador);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

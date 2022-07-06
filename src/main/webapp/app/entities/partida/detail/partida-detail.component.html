@@ -22,6 +22,18 @@
         <dd>
           <span>{{ partida.juego }}</span>
         </dd>
+        <dt><span>Ganador</span></dt>
+        <dd>
+          <div *ngIf="partida.ganador">
+            <a [routerLink]="['/jugador', partida.ganador?.id, 'view']">{{ partida.ganador?.id }}</a>
+          </div>
+        </dd>
+        <dt><span>Perdedor</span></dt>
+        <dd>
+          <div *ngIf="partida.perdedor">
+            <a [routerLink]="['/jugador', partida.perdedor?.id, 'view']">{{ partida.perdedor?.id }}</a>
+          </div>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

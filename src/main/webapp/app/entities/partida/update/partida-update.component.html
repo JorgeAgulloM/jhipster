@@ -27,6 +27,32 @@
             <small class="form-text text-danger" *ngIf="editForm.get('juego')?.errors?.required"> This field is required. </small>
           </div>
         </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_ganador">Ganador</label>
+          <select class="form-control" id="field_ganador" data-cy="ganador" name="ganador" formControlName="ganador">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="jugadorOption.id === editForm.get('ganador')!.value?.id ? editForm.get('ganador')!.value : jugadorOption"
+              *ngFor="let jugadorOption of jugadorsSharedCollection; trackBy: trackJugadorById"
+            >
+              {{ jugadorOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_perdedor">Perdedor</label>
+          <select class="form-control" id="field_perdedor" data-cy="perdedor" name="perdedor" formControlName="perdedor">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="jugadorOption.id === editForm.get('perdedor')!.value?.id ? editForm.get('perdedor')!.value : jugadorOption"
+              *ngFor="let jugadorOption of jugadorsSharedCollection; trackBy: trackJugadorById"
+            >
+              {{ jugadorOption.id }}
+            </option>
+          </select>
+        </div>
       </div>
 
       <div>

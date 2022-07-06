@@ -35,6 +35,8 @@
           <th scope="col"><span>ID</span></th>
           <th scope="col"><span>Puntos</span></th>
           <th scope="col"><span>Juego</span></th>
+          <th scope="col"><span>Ganador</span></th>
+          <th scope="col"><span>Perdedor</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -45,6 +47,16 @@
           </td>
           <td>{{ partida.puntos }}</td>
           <td>{{ partida.juego }}</td>
+          <td>
+            <div *ngIf="partida.ganador">
+              <a [routerLink]="['/jugador', partida.ganador?.id, 'view']">{{ partida.ganador?.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="partida.perdedor">
+              <a [routerLink]="['/jugador', partida.perdedor?.id, 'view']">{{ partida.perdedor?.id }}</a>
+            </div>
+          </td>
           <td class="text-end">
             <div class="btn-group">
               <button

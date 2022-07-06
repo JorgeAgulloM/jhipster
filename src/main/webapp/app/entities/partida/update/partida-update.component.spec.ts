@@ -8,6 +8,8 @@ import { of, Subject, from } from 'rxjs';
 
 import { PartidaService } from '../service/partida.service';
 import { IPartida, Partida } from '../partida.model';
+import { IJugador } from 'app/entities/jugador/jugador.model';
+import { JugadorService } from 'app/entities/jugador/service/jugador.service';
 
 import { PartidaUpdateComponent } from './partida-update.component';
 
@@ -16,6 +18,7 @@ describe('Partida Management Update Component', () => {
   let fixture: ComponentFixture<PartidaUpdateComponent>;
   let activatedRoute: ActivatedRoute;
   let partidaService: PartidaService;
+  let jugadorService: JugadorService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -37,18 +40,46 @@ describe('Partida Management Update Component', () => {
     fixture = TestBed.createComponent(PartidaUpdateComponent);
     activatedRoute = TestBed.inject(ActivatedRoute);
     partidaService = TestBed.inject(PartidaService);
+    jugadorService = TestBed.inject(JugadorService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
+    it('Should call Jugador query and add missing value', () => {
+      const partida: IPartida = { id: 456 };
+      const ganador: IJugador = { id: 4544 };
+      partida.ganador = ganador;
+      const perdedor: IJugador = { id: 46829 };
+      partida.perdedor = perdedor;
+
+      const jugadorCollection: IJugador[] = [{ id: 65195 }];
+      jest.spyOn(jugadorService, 'query').mockReturnValue(of(new HttpResponse({ body: jugadorCollection })));
+      const additionalJugadors = [ganador, perdedor];
+      const expectedCollection: IJugador[] = [...additionalJugadors, ...jugadorCollection];
+      jest.spyOn(jugadorService, 'addJugadorToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ partida });
+      comp.ngOnInit();
+
+      expect(jugadorService.query).toHaveBeenCalled();
+      expect(jugadorService.addJugadorToCollectionIfMissing).toHaveBeenCalledWith(jugadorCollection, ...additionalJugadors);
+      expect(comp.jugadorsSharedCollection).toEqual(expectedCollection);
+    });
+
     it('Should update editForm', () => {
       const partida: IPartida = { id: 456 };
+      const ganador: IJugador = { id: 97523 };
+      partida.ganador = ganador;
+      const perdedor: IJugador = { id: 79656 };
+      partida.perdedor = perdedor;
 
       activatedRoute.data = of({ partida });
       comp.ngOnInit();
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(partida));
+      expect(comp.jugadorsSharedCollection).toContain(ganador);
+      expect(comp.jugadorsSharedCollection).toContain(perdedor);
     });
   });
 
@@ -113,6 +144,16 @@ describe('Partida Management Update Component', () => {
       expect(partidaService.update).toHaveBeenCalledWith(partida);
       expect(comp.isSaving).toEqual(false);
       expect(comp.previousState).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Tracking relationships identifiers', () => {
+    describe('trackJugadorById', () => {
+      it('Should return tracked Jugador primary key', () => {
+        const entity = { id: 123 };
+        const trackResult = comp.trackJugadorById(0, entity);
+        expect(trackResult).toEqual(entity.id);
+      });
     });
   });
 });
