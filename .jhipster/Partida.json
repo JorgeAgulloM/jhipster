@@ -1,0 +1,20 @@
+{
+  "changelogDate": "20220706081506",
+  "fields": [
+    {
+      "fieldName": "puntos",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "juego",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Partida",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}
